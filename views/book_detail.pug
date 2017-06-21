@@ -1,0 +1,50 @@
+extends layout
+
+mixin label(formElement, name)
+	label(for=formElement)= name
+
+mixin input(id, type, value)
+	input(id=id type=type value=value)
+
+mixin link(href, name)
+	a(class!=attributes.class href=href)= name
+
+block content
+	h1 Book: #{title}
+	form
+		p
+			+label('title', 'Title')
+			+input('title', 'text', title)
+		p
+			+label('author', 'Author')
+			+input('author', 'text', title)
+		p
+			+label('genre', 'Genre')
+			+input('genre', 'text', title)
+		p
+			+label('first_published', 'First Published')
+			+input('first_published', 'text', title)
+		p
+			+input('', 'submit', 'Update')
+	h2 Loan History
+	table
+		thead
+			tr
+				each val in ['Book', 'Patron', 'Loaned on', 'Return by', 'Returned on', 'Action']
+					th= val
+		tbody
+			tr
+				td
+					+link('book_detail', title)
+				td
+					+link('patron_detail.html', title)
+				td #{title}
+				td #{title}
+				td #{title}
+				td
+					+link('return_book.html', 'Return Book')(class='button')
+
+
+
+
+

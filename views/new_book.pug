@@ -1,0 +1,25 @@
+extends layout
+
+mixin label(formElement, name)
+	label(for=formElement)= name
+
+mixin input(id, type, value)
+	input(id=id type=type value=value)
+
+block content
+	h1 New Book
+	form
+		p
+			+label('title', 'Title')
+			+input('title', 'text', '')
+		p
+			+label('author', 'Author')
+			+input('author', 'text', '')
+		p
+			+label('genre', 'Genre')
+			+input('genre', 'text', '')
+		p
+			+label('first_published', 'First Published')
+			+input('first_published', 'text', '')
+		p
+			+input('', 'submit', 'Create New Book')
