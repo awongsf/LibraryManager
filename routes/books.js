@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var Book = require('../models').Book;
 
 /* GET books page. */
-router.get('/all_books', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('all_books', { title: 'Books' });
 });
 
@@ -14,8 +15,17 @@ router.get('/checked_books', function(req, res, next) {
   res.render('checked_books', { title: 'Test' });
 });
 
+/* POST create book. */
+router.post('/', function(req, res, next) {
+  console.log(req.body);
+  Book.create(req.body).then(function(book) {
+    res.redirect('/books');
+  });
+});
+
+/* Create a new book form. */
 router.get('/new_book', function(req, res, next) {
-  res.render('new_book', { title: 'Test' });
+  res.render('new_book', { book: Book.build(), title: 'New Book' });
 });
 
 router.get('/overdue_books', function(req, res, next) {

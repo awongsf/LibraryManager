@@ -7,19 +7,19 @@ mixin input(id, type, value)
 	input(id=id type=type value=value)
 
 block content
-	h1 New Book
-	form
+	h1= title
+	form(action='/books', method='post')
 		p
 			+label('title', 'Title')
-			+input('title', 'text', '')
+			+input('title', 'text', book.title)
 		p
 			+label('author', 'Author')
-			+input('author', 'text', '')
+			+input('author', 'text', book.author)
 		p
 			+label('genre', 'Genre')
-			+input('genre', 'text', '')
+			+input('genre', 'text', book.genre)
 		p
 			+label('first_published', 'First Published')
-			+input('first_published', 'text', '')
+			+input('first_published', 'text', book.first_published)
 		p
 			+input('', 'submit', 'Create New Book')
