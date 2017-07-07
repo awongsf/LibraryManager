@@ -1,4 +1,33 @@
 extends layout
 
+mixin link(href, name)
+  a(class!=attributes.class href=href)= name
+
 block content
-	h1= title
+    h1= title
+    p
+        +link('new_loan', 'Create New Loan')(class='button')
+    p Filters&nbsp;
+        +link('all_loans', 'All')
+        .
+            &nbsp;|&nbsp;
+        +link('overdue_loans', 'Overdue')
+        .
+            &nbsp;|&nbsp;
+        +link('checked_loans', 'Checked Out')
+    table
+        thead
+            tr
+                each val in ['Book', 'Patron', 'Loaned on', 'Return by', 'Returned on', 'Action']
+                    th= val
+        tbody
+            each loan in loans
+                tr
+                    td
+                        +link('book_detail', loan.book_id)
+                    td
+                        +link('patron_detail', loan.patron_id)
+                    each val in [loan.loaned_on, loan.return_by, loan.returned_on]
+                        td=val
+                    td
+                        +link('return_book', 'Return Book')(class='button')

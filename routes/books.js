@@ -4,7 +4,9 @@ var Book = require('../models').Book;
 
 /* GET books page. */
 router.get('/', function(req, res, next) {
-  res.render('all_books', { title: 'Books' });
+  Book.findAll({order: [['id', 'DESC']]}).then(function(books){
+    res.render('all_books', {books: books, title: 'Books' });
+  });
 });
 
 router.get('/book_detail', function(req, res, next) {
@@ -12,12 +14,11 @@ router.get('/book_detail', function(req, res, next) {
 });
 
 router.get('/checked_books', function(req, res, next) {
-  res.render('checked_books', { title: 'Test' });
+  res.render('checked_books', { title: 'Checked Out Books' });
 });
 
 /* POST create book. */
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   Book.create(req.body).then(function(book) {
     res.redirect('/books');
   });

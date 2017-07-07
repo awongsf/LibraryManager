@@ -17,5 +17,8 @@
     "sequelize-cli": "^2.7.0",
     "serve-favicon": "~2.3.2",
     "sqlite3": "^3.1.8"
+  },
+  "devDependencies": {
+    "body-parser": "^1.16.1"
   }
 }

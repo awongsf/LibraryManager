@@ -4,7 +4,7 @@ mixin link(href, name)
 	a(class!=attributes.class href=href)= name
 
 block content
-	h1 Checked Out Books
+	h1= title
 	p 
 		+link('new_book', 'Create New Book')(class='button')
 	p Filters&nbsp;

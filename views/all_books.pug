@@ -1,5 +1,8 @@
 extends layout
 
+mixin link(href, name)
+	a(href=href)= name
+
 block content
 	h1= title
 	p
@@ -18,102 +21,12 @@ block content
 				each val in ['Title', 'Author', 'Genre', 'Year Released']
 					th= val
 		tbody
-			tr
-				td
-					mixin link(href, name)
-						a(href=href)= name
-
-					+link('book_detail', 'Harry Potter and the Philosopher\'s Stone')
-
-				each val in ['J.K. Rowling', 'Fantasy', '1997']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Chamber of Secrets')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '1998']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Prisoner of Azkaban')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '1999']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Goblet of Fire')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '2000']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Order of the Phoenix')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '2003']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Half-Blood Prince')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '2005']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Harry Potter and the Deathly Hallows')
-					
-				each val in ['J.K. Rowling', 'Fantasy', '2007']
-					td=val
-			tr
-				td
-					+link('book_detail', 'A Brief History of Time')
-					
-				each val in ['Stephen Hawking', 'Non Fiction', '1988']
-					td=val
-			tr
-				td
-					+link('book_detail', 'The Universe in a Nutshell')
-					
-				each val in ['Stephen Hawking', 'Non Fiction', '2001']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Frankenstein')
-					
-				each val in ['Mary Shelley', 'Horror', '1818']
-					td=val
-			tr
-				td
-					+link('book_detail', 'The Martian')
-					
-				each val in ['Andy Weir', 'Science Fiction', '2014']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Ready Player One')
-					
-				each val in ['Ernest Cline', 'Science Fiction', '2011']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Armada')
-					
-				each val in ['Ernest Cline', 'Science Fiction', '2015']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Pride and Prejudice')
-					
-				each val in ['Jane Austen', 'Classic', '1813']
-					td=val
-			tr
-				td
-					+link('book_detail', 'Emma')
-					
-				each val in ['Jane Austen', 'Classic', '1815']
-					td=val
-
-
-
+			each book in books
+				tr
+					td
+						+link('book_detail', book.title)
+					each val in [book.author, book.genre, book.first_published]
+						td=val
 
 
 

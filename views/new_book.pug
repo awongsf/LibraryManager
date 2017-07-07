@@ -3,8 +3,8 @@ extends layout
 mixin label(formElement, name)
 	label(for=formElement)= name
 
-mixin input(id, type, value)
-	input(id=id type=type value=value)
+mixin input(name, type, value)
+	input(name=name type=type value=value)
 
 block content
 	h1= title
