@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     library_id: DataTypes.STRING,
     zip_code: DataTypes.INTEGER
   }, {
+    underscored: true,
     classMethods: {
       associate: function(models) {
         // associations can be defined here

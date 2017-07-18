@@ -8,13 +8,13 @@ block content
 	p
 		a(href='/books/new_book' class='button') Create New Book
 	p Filters&nbsp;
-		a(href='/books') All
+		+link('/books', 'All')
 		.
 			&nbsp;|&nbsp;
-		a(href='/books/overdue_books') Overdue
+		+link('/books/overdue_books', 'Overdue')
 		.
 			&nbsp;|&nbsp;
-		a(href='/books/checked_books') Checked Out
+		+link('/books/checked_books', 'Checked Out')
 	table
 		thead
 			tr

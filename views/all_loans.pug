@@ -8,13 +8,13 @@ block content
     p
         +link('new_loan', 'Create New Loan')(class='button')
     p Filters&nbsp;
-        +link('all_loans', 'All')
+        +link('/loans', 'All')
         .
             &nbsp;|&nbsp;
-        +link('overdue_loans', 'Overdue')
+        +link('/loans/overdue_loans', 'Overdue')
         .
             &nbsp;|&nbsp;
-        +link('checked_loans', 'Checked Out')
+        +link('/loans/checked_loans', 'Checked Out')
     table
         thead
             tr
@@ -24,10 +24,11 @@ block content
             each loan in loans
                 tr
                     td
-                        +link('book_detail', loan.book_id)
+                        +link('book_detail', loan.Book.title)
                     td
-                        +link('patron_detail', loan.patron_id)
+                        +link('patron_detail', loan.Patron.first_name + " " + loan.Patron.last_name)
                     each val in [loan.loaned_on, loan.return_by, loan.returned_on]
                         td=val
                     td
-                        +link('return_book', 'Return Book')(class='button')
+                        unless loan.returned_on
+                            +link('return_book', 'Return Book')(class='button')
