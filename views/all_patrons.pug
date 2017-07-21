@@ -6,7 +6,7 @@ mixin link(href, name)
 block content
     h1= title
     p
-        +link('new_patron', 'Create New Patron')(class='button')
+        +link('patrons/new_patron', 'Create New Patron')(class='button')
     table
         thead
             tr

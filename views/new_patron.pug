@@ -1,0 +1,31 @@
+extends layout
+
+mixin label(formElement, name)
+	label(for=formElement)= name
+
+mixin input(name, type, value)
+	input(name=name type=type value=value)
+
+block content
+	h1= title
+	form(action='/patrons', method='post')
+		p
+			+label('first_name', 'First Name')
+			+input('first_name', 'text', patron.first_name)
+		p
+			+label('last_name', 'Last Name')
+			+input('last_name', 'text', patron.last_name)
+		p
+			+label('address', 'Address')
+			+input('address', 'text', patron.address)
+		p
+			+label('email', 'Email')
+			+input('email', 'text', patron.email)
+		p
+			+label('library_id', 'Library ID')
+			+input('library_id', 'text', patron.library_id)
+		p
+			+label('zip_code', 'Zip Code')
+			+input('zip_code', 'text', patron.zip_code)
+		p
+			+input('', 'submit', 'Create New Patron')
