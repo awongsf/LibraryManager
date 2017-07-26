@@ -6,7 +6,7 @@ mixin link(href, name)
 block content
     h1= title
     p
-        +link('new_loan', 'Create New Loan')(class='button')
+        +link('/loans/new_loan', 'Create New Loan')(class='button')
     p Filters&nbsp;
         +link('/loans', 'All')
         .
@@ -27,8 +27,13 @@ block content
                         +link('book_detail', loan.Book.title)
                     td
                         +link('patron_detail', loan.Patron.first_name + " " + loan.Patron.last_name)
-                    each val in [loan.loaned_on, loan.return_by, loan.returned_on]
-                        td=val
-                    td
-                        unless loan.returned_on
+                    td=loan.formatDate(loan.loaned_on)
+                    td=loan.formatDate(loan.return_by)
+                    if loan.returned_on
+                        td=loan.formatDate(loan.returned_on)
+                        td
+                    else
+                        td
+                        td
                             +link('return_book', 'Return Book')(class='button')
+                            

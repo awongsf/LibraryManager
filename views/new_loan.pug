@@ -1,0 +1,32 @@
+extends layout
+
+mixin label(formElement, name)
+	label(for=formElement)= name
+
+mixin input(name, type, value)
+	input(name=name type=type value=value)
+
+mixin option(value, name)
+	option(value=value)= name
+
+block content
+	h1= title
+	form(action='/loans', method='post')
+		p
+			+label('book_id', 'Book')
+			select(id='book_id', name='book_id')
+				each book in books
+					+option(book.id, book.title)
+		p
+			+label('patron_id', 'Patron')
+			select(id='patron_id', name='patron_id')
+				each patron in patrons
+					+option(patron.id, patron.first_name + " " + patron.last_name)
+		p
+			+label('loaned_on', 'Loaned on:')
+			+input('loaned_on', 'text', loaned_on)
+		p
+			+label('return_by', 'Return by:')
+			+input('return_by', 'text', return_by)
+		p
+			+input('', 'submit', 'Create New Loan')

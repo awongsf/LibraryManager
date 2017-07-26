@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 var Loan = require('../models').Loan;
 var Book = require('../models').Book;
 var Patron = require('../models').Patron;
@@ -65,6 +66,29 @@ router.get('/overdue_loans', function(req, res, next) {
 		]
 	}).then(function(loans){
 		res.render('all_loans', { loans: loans, title: 'Overdue Loans' });
+	});
+});
+
+/* POST create new loan. */
+router.post('/', function(req, res, next) {
+  Loan.create(req.body).then(function(loan) {
+    res.redirect('/loans');
+  });
+});
+
+/* Create a new loan form. */
+router.get('/new_loan', function(req, res, next) {
+	Book.findAll().then(function(books){
+		Patron.findAll().then(function(patrons){
+			res.render('new_loan', { 
+				books: books, 
+				patrons: patrons, 
+				loaned_on: moment().format('YYYY-MM-DD'),
+				return_by: moment().add('7', 'days').format('YYYY-MM-DD'),
+				loan: Loan.build(),
+				title: 'New Loan'
+			});		
+		});
 	});
 });
 

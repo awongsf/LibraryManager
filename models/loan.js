@@ -1,4 +1,6 @@
 'use strict';
+var moment = require('moment');
+
 module.exports = function(sequelize, DataTypes) {
   var Loan = sequelize.define('Loan', {
     id: {
@@ -15,6 +17,11 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+      }
+    },
+    instanceMethods: {
+      formatDate: function(date) {
+        return moment(date).format('YYYY-MM-DD');
       }
     }
   });
