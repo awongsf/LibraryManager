@@ -3,27 +3,27 @@ extends layout
 mixin label(formElement, name)
 	label(for=formElement)= name
 
-mixin input(id, type, value)
-	input(id=id type=type value=value)
+mixin input(name, type, value)
+	input(name=name type=type value=value)
 
 mixin link(href, name)
 	a(class!=attributes.class href=href)= name
 
 block content
 	h1 Book: #{title}
-	form
+	form(action='/books/' + book.id + '?_method=PUT', method='post')
 		p
 			+label('title', 'Title')
-			+input('title', 'text', title)
+			+input('title', 'text', book.title)
 		p
 			+label('author', 'Author')
-			+input('author', 'text', title)
+			+input('author', 'text', book.author)
 		p
 			+label('genre', 'Genre')
-			+input('genre', 'text', title)
+			+input('genre', 'text', book.genre)
 		p
 			+label('first_published', 'First Published')
-			+input('first_published', 'text', title)
+			+input('first_published', 'text', book.first_published)
 		p
 			+input('', 'submit', 'Update')
 	h2 Loan History
@@ -33,16 +33,21 @@ block content
 				each val in ['Book', 'Patron', 'Loaned on', 'Return by', 'Returned on', 'Action']
 					th= val
 		tbody
-			tr
-				td
-					+link('book_detail', title)
-				td
-					+link('patron_detail.html', title)
-				td #{title}
-				td #{title}
-				td #{title}
-				td
-					+link('return_book', 'Return Book')(class='button')
+			each loan in loans
+				tr
+					td
+						+link('/books/book_detail/' + book.id, book.title)
+					td
+						+link('patron_detail.html', loan.Patron.first_name + " " + loan.Patron.last_name)
+					td=loan.formatDate(loan.loaned_on)
+					td=loan.formatDate(loan.return_by)
+					if loan.returned_on
+						td=loan.formatDate(loan.returned_on)
+						td
+					else
+						td
+						td
+							+link('return_book', 'Return Book')(class='button')
 
 
 

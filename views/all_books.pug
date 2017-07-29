@@ -24,7 +24,7 @@ block content
 			each book in books
 				tr
 					td
-						+link('book_detail', book.title)
+						+link('/books/book_detail/' + book.id, book.title)
 					each val in [book.author, book.genre, book.first_published]
 						td=val
 

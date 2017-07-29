@@ -24,7 +24,7 @@ block content
             each loan in loans
                 tr
                     td
-                        +link('book_detail', loan.Book.title)
+                        +link('/books/book_detail/' + loan.Book.id, loan.Book.title)
                     td
                         +link('patron_detail', loan.Patron.first_name + " " + loan.Patron.last_name)
                     td=loan.formatDate(loan.loaned_on)
