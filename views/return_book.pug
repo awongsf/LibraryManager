@@ -3,30 +3,30 @@ extends layout
 mixin label(formElement, name)
 	label(for=formElement)= name
 
-mixin input(id, type, value)
-	input(id=id type=type value=value)
+mixin input(name, type, value)
+	input(name=name type=type value=value)
 
 block content
 	h1 Patron: Return Book
 	p
 		strong Book Title:&nbsp;
 		.
-			Harry Potter and the Goblet of Fire
+			#{book.title}
 	p
 		strong Loaned By:&nbsp;
 		.
-			Andrew Chalkley
+			#{loan.Patron.first_name + " " + loan.Patron.last_name}
 	p
 		strong Loaned On:&nbsp;
 		.
-			2015-12-11
+			#{loan.formatDate(loan.loaned_on)}
 	p
 		strong Return By:&nbsp;
 		.
-			2015-12-18
-	form
+			#{loan.formatDate(loan.return_by)}
+	form(action='/loans/' + loan.id + '?_method=PUT', method='post')
 		p
 			+label('returned_on', 'Returned on:')
-			+input('returned_on', 'text', '2020-10-10')
+			+input('returned_on', 'text', returned_on)
 		p
 			+input('', 'submit', 'Return Book')

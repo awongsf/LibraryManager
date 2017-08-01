@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 var Book = require('../models').Book;
 var Loan = require('../models').Loan;
 var Patron = require('../models').Patron;
@@ -11,7 +12,9 @@ var Patron = require('../models').Patron;
 
 /* GET books page. */
 router.get('/', function(req, res, next) {
-	Book.findAll({order: [['id', 'DESC']]}).then(function(books){
+	Book.findAll({
+		order: [['id', 'DESC']],
+	}).then(function(books){
 		res.render('all_books', { books: books, title: 'Books' });
 	});
 });
@@ -34,12 +37,9 @@ router.get('/book_detail/:id', function(req, res, next) {
 	});
 });
 
-/* PUT update article. */
+/* PUT Update Book. */
 router.put("/:id", function(req, res, next){
-	console.log("TEST");
 	Book.findById(req.params.id).then(function(book){
-		console.log("REQUEST");
-		console.log(req);
 		return book.update(req.body);
 	}).then(function(book){
 		res.redirect("/books");        
@@ -105,8 +105,23 @@ router.get('/overdue_books', function(req, res, next) {
 	});
 });
 
-router.get('/return_book', function(req, res, next) {
-	res.render('return_book', { title: 'Test' });
+/* GET Return Book Form */
+router.get('/return_book/:id', function(req, res, next) {
+	Book.findById(req.params.id).then(function(book){
+		Loan.findOne({
+			where: {
+				book_id: book.id
+			},
+			include: [
+				{
+					model: Patron
+				}
+			]
+		}).then(function(loan){
+			console.log(loan);
+			res.render('return_book', { book: book, loan: loan, returned_on: moment().format('YYYY-MM-DD') });	
+		});
+	});
 });
 
 module.exports = router;

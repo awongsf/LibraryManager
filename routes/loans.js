@@ -92,4 +92,13 @@ router.get('/new_loan', function(req, res, next) {
 	});
 });
 
+/* Return a Book via PUT Update Loan. */
+router.put("/:id", function(req, res, next){
+	Loan.findById(req.params.id).then(function(loan){
+		return loan.update(req.body);
+	}).then(function(loan){
+		res.redirect("/loans");        
+	})
+});
+
 module.exports = router;

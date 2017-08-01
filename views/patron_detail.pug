@@ -1,0 +1,60 @@
+extends layout
+
+mixin label(formElement, name)
+	label(for=formElement)= name
+
+mixin input(name, type, value)
+	input(name=name type=type value=value)
+
+mixin link(href, name)
+	a(class!=attributes.class href=href)= name
+
+block content
+	h1 Patron: #{title}
+	form(action='/patrons/' + patron.id + '?_method=PUT', method='post')
+		p
+			+label('first_name', 'First Name')
+			+input('first_name', 'text', patron.first_name)
+		p
+			+label('last_name', 'Last Name')
+			+input('last_name', 'text', patron.last_name)
+		p
+			+label('address', 'Address')
+			+input('address', 'text', patron.address)
+		p
+			+label('email', 'Email')
+			+input('email', 'text', patron.email)
+		p
+			+label('library_id', 'Library ID')
+			+input('library_id', 'text', patron.library_id)
+		p
+			+label('zip_code', 'Zip Code')
+			+input('zip_code', 'text', patron.zip_code)
+		p
+			+input('', 'submit', 'Update')
+	h2 Loan History
+	table
+		thead
+			tr
+				each val in ['Book', 'Patron', 'Loaned on', 'Return by', 'Returned on', 'Action']
+					th= val
+		tbody
+			each loan in loans
+				tr
+					td
+						+link('/books/book_detail/' + loan.Book.id, loan.Book.title)
+					td
+						+link('patron_detail.html', patron.first_name + " " + patron.last_name)
+					td=loan.formatDate(loan.loaned_on)
+					td=loan.formatDate(loan.return_by)
+					if loan.returned_on
+						td=loan.formatDate(loan.returned_on)
+						td
+					else
+						td
+						td
+							+link('return_book', 'Return Book')(class='button')
+
+
+
+

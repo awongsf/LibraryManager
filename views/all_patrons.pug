@@ -16,6 +16,6 @@ block content
             each patron in patrons
                 tr
                     td
-                        +link('patron_detail', patron.first_name + ' ' + patron.last_name)
+                        +link('patrons/patron_detail/' + patron.id, patron.first_name + ' ' + patron.last_name)
                     each val in [patron.address, patron.email, patron.library_id, patron.zip_code]
                         td=val
