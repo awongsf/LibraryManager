@@ -9,6 +9,7 @@ mixin input(name, type, value)
 block content
 	h1= title
 	form(action='/books', method='post')
+		include error
 		p
 			+label('title', 'Title')
 			+input('title', 'text', book.title)

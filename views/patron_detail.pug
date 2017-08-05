@@ -44,7 +44,7 @@ block content
 					td
 						+link('/books/book_detail/' + loan.Book.id, loan.Book.title)
 					td
-						+link('patron_detail.html', patron.first_name + " " + patron.last_name)
+						+link('/patrons/patron_detail/' + patron.id, patron.first_name + " " + patron.last_name)
 					td=loan.formatDate(loan.loaned_on)
 					td=loan.formatDate(loan.return_by)
 					if loan.returned_on
@@ -53,7 +53,7 @@ block content
 					else
 						td
 						td
-							+link('return_book', 'Return Book')(class='button')
+							+link('/loans/return_book/' + book.id, 'Return Book')(class='button')
 
 
 

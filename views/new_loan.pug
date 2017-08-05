@@ -12,6 +12,7 @@ mixin option(value, name)
 block content
 	h1= title
 	form(action='/loans', method='post')
+		include error
 		p
 			+label('book_id', 'Book')
 			select(id='book_id', name='book_id')

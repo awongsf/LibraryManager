@@ -7,11 +7,58 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    book_id: DataTypes.INTEGER,
-    patron_id: DataTypes.INTEGER,
-    loaned_on: DataTypes.DATE,
-    return_by: DataTypes.DATE,
-    returned_on: DataTypes.DATE
+    book_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'Please pick a book.'
+        }
+      }
+    },
+    patron_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'Please pick a patron.'
+        }
+      }
+    },
+    loaned_on: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'Please enter a Loaned On date.'
+        },
+        isDate: {
+          args: [[true]],
+          msg: 'Please enter a valid Loaned On date.'
+        }
+      }
+    },
+    return_by: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'Please enter a Loaned On date.'
+        },
+        isDate: {
+          args: [[true]],
+          msg: 'Please enter a valid Return By date.'
+        }
+      }
+    },
+    returned_on: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'Please enter a Returned On date.'
+        },
+        isDate: {
+          args: [[true]],
+          msg: 'Please enter a valid Returned On date.'
+        }
+      }
+    }
   }, {
     underscored: true,
     classMethods: {

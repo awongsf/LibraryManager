@@ -5,11 +5,6 @@ var Loan = require('../models').Loan;
 var Book = require('../models').Book;
 var Patron = require('../models').Patron;
 
-Loan.belongsTo(Book);
-Book.hasOne(Loan);
-Loan.belongsTo(Patron);
-Patron.hasMany(Loan);
-
 /* GET Loan Listing page. */
 router.get('/', function(req, res, next) {
 	Loan.findAll({
@@ -22,7 +17,6 @@ router.get('/', function(req, res, next) {
 			}
 		]
 	}).then(function(loans){
-		//res.json(loans)
 		res.render('all_loans', { loans: loans, title: 'Loans' });
 	});
   
@@ -71,9 +65,29 @@ router.get('/overdue_loans', function(req, res, next) {
 
 /* POST create new loan. */
 router.post('/', function(req, res, next) {
-  Loan.create(req.body).then(function(loan) {
-    res.redirect('/loans');
-  });
+	Loan.create(req.body).then(function(loan) {
+		res.redirect('/loans');
+	}).catch(function(error){
+		if (error.name === "SequelizeValidationError") {
+			Book.findAll().then(function(books){
+				Patron.findAll().then(function(patrons){
+					res.render('new_loan', { 
+						errors: error.errors,
+						books: books, 
+						patrons: patrons, 
+						loaned_on: req.body.loaned_on,
+						return_by: req.body.return_by,
+						loan: Loan.build(req.body),
+						title: 'New Loan'
+					});		
+				});
+			});
+		} else {
+			throw error;
+		}
+	}).catch(function(error){
+		res.send(500, error);
+	});
 });
 
 /* Create a new loan form. */
@@ -92,13 +106,54 @@ router.get('/new_loan', function(req, res, next) {
 	});
 });
 
+/* GET Return Book Form */
+router.get('/return_book/:id', function(req, res, next) {
+	Book.findById(req.params.id).then(function(book){
+		Loan.findOne({
+			where: {
+				book_id: book.id,
+				returned_on: null
+			},
+			include: [
+				{
+					model: Patron
+				}
+			]
+		}).then(function(loan){
+			res.render('return_book', { book: book, loan: loan, returned_on: moment().format('YYYY-MM-DD') });	
+		});
+	});
+});
+
 /* Return a Book via PUT Update Loan. */
 router.put("/:id", function(req, res, next){
 	Loan.findById(req.params.id).then(function(loan){
 		return loan.update(req.body);
 	}).then(function(loan){
 		res.redirect("/loans");        
-	})
+	}).catch(function(error){
+		if (error.name === "SequelizeValidationError") {
+			Loan.findOne({
+				where: {
+					id: req.params.id
+				},
+				include: [
+					{
+						model: Patron
+					},
+					{
+						model: Book
+					}
+				]
+			}).then(function(loan){
+				res.render('return_book', { errors: error.errors, book: loan.Book, loan: loan, returned_on: req.body.returned_on });
+			});
+		} else {
+			throw error;
+		}
+	}).catch(function(error){
+		res.send(500, error);
+	});
 });
 
 module.exports = router;

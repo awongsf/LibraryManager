@@ -5,11 +5,6 @@ var Book = require('../models').Book;
 var Loan = require('../models').Loan;
 var Patron = require('../models').Patron;
 
-// Loan.belongsTo(Book);
-// Book.hasOne(Loan);
-// Loan.belongsTo(Patron);
-// Patron.hasMany(Loan);
-
 /* GET books page. */
 router.get('/', function(req, res, next) {
 	Book.findAll({
@@ -72,6 +67,14 @@ router.get('/checked_books', function(req, res, next) {
 router.post('/', function(req, res, next) {
 	Book.create(req.body).then(function(book) {
 		res.redirect('/books');
+	}).catch(function(error){
+		if (error.name === "SequelizeValidationError") {
+			res.render('new_book', { book: Book.build(req.body), errors: error.errors, title: 'New Book'})
+		} else {
+			throw error;
+		}
+	}).catch(function(error){
+		res.send(500, error);
 	});
 });
 
@@ -101,25 +104,6 @@ router.get('/overdue_books', function(req, res, next) {
 			}
 		}).then(function(books){
 			res.render('all_books', { books: books, title: 'Overdue Books' });
-		});
-	});
-});
-
-/* GET Return Book Form */
-router.get('/return_book/:id', function(req, res, next) {
-	Book.findById(req.params.id).then(function(book){
-		Loan.findOne({
-			where: {
-				book_id: book.id
-			},
-			include: [
-				{
-					model: Patron
-				}
-			]
-		}).then(function(loan){
-			console.log(loan);
-			res.render('return_book', { book: book, loan: loan, returned_on: moment().format('YYYY-MM-DD') });	
 		});
 	});
 });

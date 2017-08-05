@@ -9,6 +9,7 @@ mixin input(name, type, value)
 block content
 	h1= title
 	form(action='/patrons', method='post')
+		include error
 		p
 			+label('first_name', 'First Name')
 			+input('first_name', 'text', patron.first_name)
