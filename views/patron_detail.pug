@@ -12,6 +12,7 @@ mixin link(href, name)
 block content
 	h1 Patron: #{title}
 	form(action='/patrons/' + patron.id + '?_method=PUT', method='post')
+		include error
 		p
 			+label('first_name', 'First Name')
 			+input('first_name', 'text', patron.first_name)

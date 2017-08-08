@@ -12,6 +12,7 @@ mixin link(href, name)
 block content
 	h1 Book: #{title}
 	form(action='/books/' + book.id + '?_method=PUT', method='post')
+		include error
 		p
 			+label('title', 'Title')
 			+input('title', 'text', book.title)

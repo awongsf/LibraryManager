@@ -38,7 +38,29 @@ router.put("/:id", function(req, res, next){
 		return book.update(req.body);
 	}).then(function(book){
 		res.redirect("/books");        
-	})
+	}).catch(function(error){
+		if (error.name === "SequelizeValidationError") {
+			Book.findById(req.params.id).then(function(book){
+				Loan.findAll({
+					where: {
+						book_id: book.id
+					},
+					include: [
+						{
+							model: Patron
+						}
+					]
+				}).then(function(loans){
+					req.body.id = req.params.id;
+					res.render('book_detail', { book: Book.build(req.body), loans: loans, errors: error.errors, title: book.title})
+				});
+			});
+		} else {
+			throw error;
+		}
+	}).catch(function(error){
+		res.send(500, error);
+	});
 });
 
 /* GET Checked Out Books */
